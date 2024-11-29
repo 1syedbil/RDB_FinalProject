@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="curtis.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="viewPopularity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
