@@ -78,6 +78,7 @@ bool checkRange(int toCheck, int min, int max)
 	return (toCheck <= max && toCheck >= min); // Returns true if it is within the range
 }
 
+// Takes the loop of out the getting input, so that we can inform them of wrong input, pause, then cls and show the menu again 
 void getMenuChoice(const char inputPrompt[], int* result, int minChoice, int maxChoice) {
 	char input[MAX_INPUT];
 
