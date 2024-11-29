@@ -8,6 +8,8 @@
 
 #include "input.h"
 #include "curtis.h"
+#include "checkOrderStatus.h"
+#include "trackRevenue.h"
 
 #define MAKE_PURCHASE 1
 #define MAKE_ORDER 2
