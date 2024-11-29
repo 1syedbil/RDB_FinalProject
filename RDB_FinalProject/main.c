@@ -11,6 +11,8 @@
 #include "checkOrderStatus.h"
 #include "trackRevenue.h"
 
+/* --- Menu Choices --- */
+
 #define MAKE_PURCHASE 1
 #define MAKE_ORDER 2
 #define TRACK_REVENUE_ITEM 3
@@ -19,6 +21,10 @@
 #define MANAGE_EMPLOYEE 6
 #define QUIT_PROGRAM 7
 
+/* --- Main Menu --- */
+
+#define MM_MAX_CHOICE 7
+#define MM_MIN_CHOICE 1
 
 void displayMainMenu()
 {
@@ -57,7 +63,7 @@ int main(void)
     {
         system("cls");
         displayMainMenu();
-        getInteger("Input choice (1-6) from menu", &input);
+        getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE);
 
         switch (input)
         {
@@ -83,8 +89,6 @@ int main(void)
             exit(EXIT_SUCCESS);
             break;
         default:
-            printf("Invalid input, please try again\n");
-            system("pause");
             break;
         }
     }
