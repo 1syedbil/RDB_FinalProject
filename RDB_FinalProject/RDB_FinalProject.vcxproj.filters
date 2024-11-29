@@ -18,12 +18,18 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wds.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="curtis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dylan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="userInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
