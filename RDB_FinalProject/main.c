@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include <mysql.h>
 
+#include "input.h"
+
 int main(void)
 {
     MYSQL* conn;
