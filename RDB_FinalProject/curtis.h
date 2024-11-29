@@ -3,6 +3,6 @@
 
 #include "input.h"
 
-// stuff goes here
-
 #endif
+
+// Write your functions after the define
