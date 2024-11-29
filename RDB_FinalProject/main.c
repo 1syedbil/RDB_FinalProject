@@ -7,6 +7,7 @@
 #include <mysql.h>
 
 #include "input.h"
+#include "curtis.h"
 
 
 int main(void)
