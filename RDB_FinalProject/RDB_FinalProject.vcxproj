@@ -134,7 +134,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
-    <ClCompile Include="wds.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h" />
