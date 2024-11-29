@@ -139,7 +139,7 @@
     <ClInclude Include="curtis.h" />
     <ClInclude Include="dylan.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="userInterface.h" />
+    <ClInclude Include="viewPopularity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
