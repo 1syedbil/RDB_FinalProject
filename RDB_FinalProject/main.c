@@ -10,6 +10,7 @@
 #include "curtis.h"
 #include "checkOrderStatus.h"
 #include "trackRevenue.h"
+#include "viewPopularity.h"
 
 #define MAKE_PURCHASE 1
 #define MAKE_ORDER 2
@@ -18,6 +19,10 @@
 #define CHECK_ORDER_STATUS 5
 #define MANAGE_EMPLOYEE 6
 #define QUIT_PROGRAM 7
+
+#define POPULARITYSUB1 1
+#define POPULARITYSUB2 2
+#define POPULARITYSUB3 3
 
 
 void displayMainMenu()
@@ -35,8 +40,8 @@ int main(void)
 {
     // SQL Data
     MYSQL* conn;
-    MYSQL_RES* res;
-    MYSQL_ROW row;
+    MYSQL_RES* res; //don't think this is neccessary in main - bilal
+    MYSQL_ROW row;  //don't think this is neccessary in main - bilal
     char* server = "sql5.freesqldatabase.com";
     char* user = "sql5746768";
     char* password = "BtgqLmSpNk";
@@ -62,21 +67,57 @@ int main(void)
         switch (input)
         {
         case MAKE_PURCHASE:
+            system("cls");
 
             break;
         case MAKE_ORDER:
+            system("cls");
 
             break;
         case TRACK_REVENUE_ITEM:
+            system("cls"); 
 
             break;
         case VIEW_ITEM_POPULARITY:
 
+            while (input < 1 || input > 3) 
+            { 
+                system("cls"); 
+
+                input = popularitySubMenu();
+
+                switch (input)
+                {
+                case POPULARITYSUB1:
+                    system("cls"); 
+                    viewByDep(conn); 
+
+                    break;
+                case POPULARITYSUB2:
+                    system("cls");  
+                    viewByRev(conn); 
+
+                    break;
+                case POPULARITYSUB3: 
+                    system("cls"); 
+                    viewByUnits(conn); 
+
+                    break;
+                default:
+                    printf("Invalid input, please try again\n");
+                    system("pause");
+                    break;
+                }
+            }
+
+            input = 0;
             break;
         case CHECK_ORDER_STATUS:
+            system("cls"); 
 
             break;
         case MANAGE_EMPLOYEE:
+            system("cls"); 
 
             break;
         case QUIT_PROGRAM:
