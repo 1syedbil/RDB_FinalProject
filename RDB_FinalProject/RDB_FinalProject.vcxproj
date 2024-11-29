@@ -137,6 +137,7 @@
     <ClCompile Include="wds.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="curtis.h" />
     <ClInclude Include="input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

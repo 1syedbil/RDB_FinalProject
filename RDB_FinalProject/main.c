@@ -8,6 +8,7 @@
 
 #include "input.h"
 
+
 int main(void)
 {
     MYSQL* conn;
