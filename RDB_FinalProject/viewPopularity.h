@@ -48,18 +48,31 @@ void viewByDep(MYSQL* conn)
 			system("pause"); 
 			system("cls");
 		}
+
+		sprintf(id, "%d", depID);
+
+		strcat(query, id);
+
+		if (mysql_query(conn, query)) {
+			fprintf(stderr, "%s\n", mysql_error(conn));  
+			exit(1);  
+		}
+
+		res = mysql_store_result(conn);
+
+		if (res->row_count == 0)
+		{
+			depID = 0;
+			strcpy(query, "SELECT name FROM department WHERE id=");
+			printf("A department corresponding with the ID you entered does not exist. Try again...\n\n");
+			system("pause");
+			system("cls");
+		}
+		else
+		{
+			break;
+		}
 	}
-
-	sprintf(id, "%d", depID);
-
-	strcat(query, id);
-
-	if (mysql_query(conn, query)) { 
-		fprintf(stderr, "%s\n", mysql_error(conn));
-		exit(1);
-	}
-
-	res = mysql_store_result(conn); 
 
 	row = mysql_fetch_row(res);
 
@@ -80,8 +93,8 @@ void viewByDep(MYSQL* conn)
 			strcat(query, " GROUP BY purchase_item.item_id ORDER BY SUM(purchase_item.total_price) DESC"); 
 
 			if (mysql_query(conn, query)) { 
-				fprintf(stderr, "%s\n", mysql_error(conn));
-				exit(1);
+				fprintf(stderr, "%s\n", mysql_error(conn)); 
+				exit(1); 
 			}
 
 			res = mysql_store_result(conn);
