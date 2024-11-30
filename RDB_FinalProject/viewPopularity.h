@@ -73,7 +73,7 @@ void viewByDep(MYSQL* conn)
 
 		if (choice == 1)
 		{
-			printf("Here are the most popular items in the %s department by revenue:\n\n|     Item ID      |        Item Name         |    Total Rev    |\n-----------------------------------------------------------------\n");
+			printf("Here are the most popular items in the %s department by revenue:\n\n|     Item ID      |        Item Name         |    Total Rev    |\n-----------------------------------------------------------------\n", depName);
 
 			strcpy(query, "SELECT purchase_item.item_id, item.name, SUM(purchase_item.total_price) AS Total_Sales_Rev FROM purchase_item JOIN item ON purchase_item.item_id = item.id JOIN department ON item.department_id = department.id WHERE department.id =");
 			strcat(query, id); 
@@ -97,7 +97,7 @@ void viewByDep(MYSQL* conn)
 		}
 		else if (choice == 2)
 		{
-			printf("Here are the most popular items in the %s department by number of units sold:\n\n|     Item ID      |        Item Name         |    Total Units Sold    |\n------------------------------------------------------------------------\n");
+			printf("Here are the most popular items in the %s department by number of units sold:\n\n|     Item ID      |        Item Name         |    Total Units Sold    |\n------------------------------------------------------------------------\n", depName);
 
 			strcpy(query, "SELECT purchase_item.item_id, item.name, SUM(purchase_item.item_quantity) AS Total_Units_Sold FROM purchase_item JOIN item ON purchase_item.item_id = item.id JOIN department ON item.department_id = department.id WHERE department.id =");
 			strcat(query, id); 
