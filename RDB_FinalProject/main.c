@@ -33,86 +33,80 @@
 
 void displayMainMenu()
 {
-    printf("1 - Make Purchase\n");
-    printf("2 - Make Order\n");
-    printf("3 - Track Revenue From Item\n");
-    printf("4 - View Item Popularity\n");
-    printf("5 - Check Order Status\n");
-    printf("6 - Manage Employee's\n");
-    printf("7 - Exit Program\n");
+	printf("1 - Make Purchase\n"
+		"2 - Make Order\n"
+		"3 - Track Revenue From Item\n"
+		"4 - View Item Popularity\n"
+		"5 - Check Order Status\n"
+		"6 - Manage Employee's\n"
+		"7 - Exit Program\n");
 }
 
 int main(void)
 {
     // SQL Data
     MYSQL* conn;
-    MYSQL_RES* res; 
-    MYSQL_ROW row;  
+    MYSQL_RES* res; //don't think this is neccessary in main - bilal
+    MYSQL_ROW row;  //don't think this is neccessary in main - bilal
     char* server = "sql5.freesqldatabase.com";
     char* user = "sql5746768";
     char* password = "BtgqLmSpNk";
     char* database = "sql5746768";
 
-    // Starting SQL Connection - Might put this all into a function so it looks nicer
-    conn = mysql_init(NULL);
-    if (!mysql_real_connect(conn, server,
-        user, password, database, 0, NULL, 0)) {
-        fprintf(stderr, "%s\n", mysql_error(conn));
-        exit(1);
-    }
+	// Starting SQL Connection - Might put this all into a function so it looks nicer
+	conn = mysql_init(NULL);
+	if (!mysql_real_connect(conn, server,
+		user, password, database, 0, NULL, 0)) {
+		fprintf(stderr, "%s\n", mysql_error(conn));
+		exit(1);
+	}
 
 
-    // Loop that keeps program alive and processes inputs, put your functions in here
-    int input = 0;
-    while (input != 7)
-    {
-        system("cls");
-        displayMainMenu();
-        getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE);
+	// Loop that keeps program alive and processes inputs, put your functions in here
+	voidFunc menuPtr = displayMainMenu;
+	int input = 0;
+	while (input != 7)
+	{
+	
+		getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
 
-        switch (input)
-        {
-        case MAKE_PURCHASE:
-            system("cls");
+		switch (input)
+		{
+		case MAKE_PURCHASE:
+			system("cls");
 
-            break;
-        case MAKE_ORDER:
-            system("cls");
+			break;
+		case MAKE_ORDER:
+			system("cls");
 
-            break;
-        case TRACK_REVENUE_ITEM:
-            system("cls"); 
+			break;
+		case TRACK_REVENUE_ITEM:
+			system("cls");
 
-            break;
-        case VIEW_ITEM_POPULARITY:
+			break;
+		case VIEW_ITEM_POPULARITY:
 
-            while (input < 1 || input > 3) 
-            { 
-                system("cls"); 
+			while (input < 1 || input > 3)
+			{
+				system("cls");
 
-                input = popularitySubMenu();
+				input = popularitySubMenu();
 
                 switch (input)
                 {
                 case POPULARITYSUB1:
                     system("cls"); 
-                    viewByDep(conn);  
-
-                    system("pause");
+                    viewByDep(conn); 
 
                     break;
                 case POPULARITYSUB2:
                     system("cls");  
-                    viewByRev(conn);
-
-                    system("pause");
+                    viewByRev(conn); 
 
                     break;
                 case POPULARITYSUB3: 
                     system("cls"); 
                     viewByUnits(conn); 
-
-                    system("pause");
 
                     break;
                 default:
@@ -122,25 +116,26 @@ int main(void)
                 }
             }
 
-            input = 0;
-            break;
-        case CHECK_ORDER_STATUS:
-            system("cls"); 
+			input = 0;
+			break;
+		case CHECK_ORDER_STATUS:
+			system("cls");
 
-            break;
-        case MANAGE_EMPLOYEE:
-            system("cls"); 
+			break;
+		case MANAGE_EMPLOYEE:
+			system("cls");
 
-            break;
-        case QUIT_PROGRAM:
-            exit(EXIT_SUCCESS);
-            break;
-        default:
-            break;
-        }
-    }
+			break;
+		case QUIT_PROGRAM:
+			exit(EXIT_SUCCESS);
+			break;
+		default:
+			break;
+		}
+	}
 
-   mysql_close(conn);
+   
+    mysql_close(conn);
 
    return 0;
 }
