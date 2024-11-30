@@ -67,6 +67,7 @@ int main(void)
 	int input = 0;
 	while (input != 7)
 	{
+		system("cls");
 	
 		getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
 
@@ -98,16 +99,19 @@ int main(void)
                     system("cls"); 
                     viewByDep(conn); 
 
+					system("pause"); 
                     break;
                 case POPULARITYSUB2:
                     system("cls");  
                     viewByRev(conn); 
 
+					system("pause"); 
                     break;
                 case POPULARITYSUB3: 
                     system("cls"); 
                     viewByUnits(conn); 
 
+					system("pause");
                     break;
                 default:
                     printf("Invalid input, please try again\n");
