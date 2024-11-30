@@ -46,8 +46,8 @@ int main(void)
 {
     // SQL Data
     MYSQL* conn;
-    MYSQL_RES* res; //don't think this is neccessary in main - bilal
-    MYSQL_ROW row;  //don't think this is neccessary in main - bilal
+    MYSQL_RES* res; 
+    MYSQL_ROW row;  
     char* server = "sql5.freesqldatabase.com";
     char* user = "sql5746768";
     char* password = "BtgqLmSpNk";
@@ -96,17 +96,23 @@ int main(void)
                 {
                 case POPULARITYSUB1:
                     system("cls"); 
-                    viewByDep(conn); 
+                    viewByDep(conn);  
+
+                    system("pause");
 
                     break;
                 case POPULARITYSUB2:
                     system("cls");  
-                    viewByRev(conn); 
+                    viewByRev(conn);
+
+                    system("pause");
 
                     break;
                 case POPULARITYSUB3: 
                     system("cls"); 
                     viewByUnits(conn); 
+
+                    system("pause");
 
                     break;
                 default:
@@ -134,8 +140,7 @@ int main(void)
         }
     }
 
-   
-    mysql_close(conn);
+   mysql_close(conn);
 
-	return 0;
+   return 0;
 }
