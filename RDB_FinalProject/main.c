@@ -83,7 +83,7 @@ int main(void)
 			break;
 		case TRACK_REVENUE_ITEM:
 			system("cls");
-
+			trackRevenue(conn);
 			break;
 		case VIEW_ITEM_POPULARITY:
 
