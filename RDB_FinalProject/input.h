@@ -87,7 +87,10 @@ void getMenuChoice(const char inputPrompt[], int* result, int minChoice, int max
 
 	while (loop)
 	{
-		menu();
+		if (menu != NULL)
+		{
+			menu();
+		}
 		printf("\n%s >> ", inputPrompt);
 		fgets(input, MAX_INPUT - 1, stdin);
 

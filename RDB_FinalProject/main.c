@@ -46,8 +46,6 @@ int main(void)
 {
     // SQL Data
     MYSQL* conn;
-    MYSQL_RES* res; //don't think this is neccessary in main - bilal
-    MYSQL_ROW row;  //don't think this is neccessary in main - bilal
     char* server = "sql5.freesqldatabase.com";
     char* user = "sql5746768";
     char* password = "BtgqLmSpNk";
@@ -64,11 +62,11 @@ int main(void)
 
 	// Loop that keeps program alive and processes inputs, put your functions in here
 	voidFunc menuPtr = displayMainMenu;
-	int input = 0;
-	while (input != 7)
+	bool loop = true;
+	while (loop)
 	{
+		int input = 0; 
 		system("cls");
-	
 		getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
 
 		switch (input)
@@ -132,7 +130,7 @@ int main(void)
 
 			break;
 		case QUIT_PROGRAM:
-			exit(EXIT_SUCCESS);
+			loop = false;
 			break;
 		default:
 			break;
