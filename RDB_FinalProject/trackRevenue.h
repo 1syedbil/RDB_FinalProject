@@ -21,9 +21,10 @@ void trackRevenue(MYSQL* conn) {
         int choice = 0;
         int item_id = 0;
 
-        printf("Welcom to Track Revnue from Purchase Screen\n");
-        printf("Enter '1' to continue or '0' to go back: ");
-        scanf("%d", &choice);
+        getMenuChoice("Welcome to Track Revenue from Purchase Screen\n" 
+                       "0 - Return to Main Menu\n"
+                       "1 - Contunue\n"
+                       "Input choice ", &choice, 0, 1, NULL);
 
         if (choice == 1) {
             printf("Enter Itmed ID: ");
