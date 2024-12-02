@@ -11,6 +11,7 @@
 #include "checkOrderStatus.h"
 #include "trackRevenue.h"
 #include "viewPopularity.h"
+#include "makePurchase.h"
 
 /* --- Menu Choices --- */
 
@@ -75,7 +76,8 @@ int main(void)
 		{
 		case MAKE_PURCHASE:
 			system("cls");
-
+			makePurchase(conn);
+			system("pause");
 			break;
 		case MAKE_ORDER:
 			system("cls");

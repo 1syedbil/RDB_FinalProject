@@ -26,10 +26,16 @@
     <ClInclude Include="curtis.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dylan.h">
+    <ClInclude Include="checkOrderStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="userInterface.h">
+    <ClInclude Include="trackRevenue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="viewPopularity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="makePurchase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
