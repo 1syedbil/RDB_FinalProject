@@ -31,7 +31,6 @@ void viewByDep(MYSQL* conn)
 { 
 	MYSQL_RES* res = NULL; 
 	MYSQL_ROW row = NULL; 
-	int numOfColumns = 0;
 	int depID = 0; 
 	char depName[MAXSTRING] = "";
 	char id[MAXSTRING] = "";
@@ -100,8 +99,6 @@ void viewByDep(MYSQL* conn)
 
 			res = mysql_store_result(conn);
 
-			numOfColumns = res->field_count;  
-
 			while ((row = mysql_fetch_row(res)))
 			{
 				printf("| %-16.16s | %-24.24s | %-15.15s |", row[0], row[1], row[2]);
@@ -123,8 +120,6 @@ void viewByDep(MYSQL* conn)
 			}
 
 			res = mysql_store_result(conn);
-
-			numOfColumns = res->field_count;
 
 			while ((row = mysql_fetch_row(res)))
 			{
@@ -160,8 +155,6 @@ void viewByDep(MYSQL* conn)
 
 			res = mysql_store_result(conn);
 
-			numOfColumns = res->field_count;
-
 			while ((row = mysql_fetch_row(res)))
 			{
 				printf("| %-16.16s | %-24.24s | %-15.15s |", row[0], row[1], row[2]);
@@ -184,8 +177,6 @@ void viewByDep(MYSQL* conn)
 			}
 
 			res = mysql_store_result(conn);
-
-			numOfColumns = res->field_count;
 
 			while ((row = mysql_fetch_row(res)))
 			{
@@ -226,28 +217,114 @@ int chooseDepItemRevOrUnits(void)
 
 void viewByRev(MYSQL* conn)
 {
+	MYSQL_RES* res = NULL;
+	MYSQL_ROW row = NULL;
+	char limit[MAXSTRING] = "";  
+	char query[MAXSTRING] = "SELECT purchase_item.item_id, item.name, SUM(purchase_item.total_price) AS Total_Sales_Rev FROM purchase_item JOIN item ON purchase_item.item_id = item.id GROUP BY purchase_item.item_id ORDER BY SUM(purchase_item.total_price) DESC"; 
+
 	int choice = selectNumOfItemsListed();
 
 	if (choice == 0)
 	{
+		printf("Here are the most popular items in the grocery store by revenue:\n\n|     Item ID      |        Item Name         |    Total Rev    |\n-----------------------------------------------------------------\n");
+
+		if (mysql_query(conn, query)) {
+			fprintf(stderr, "%s\n", mysql_error(conn));
+			exit(1);
+		}
+
+		res = mysql_store_result(conn);
+
+		while ((row = mysql_fetch_row(res)))
+		{
+			printf("| %-16.16s | %-24.24s | %-15.15s |", row[0], row[1], row[2]);
+
+			printf("\n");
+		}
+
 		return;
 	}
 	else if (choice != 0)
 	{
+		sprintf(limit, "%d", choice); 
+
+		printf("Here are the most popular items in the grocery store by revenue:\n\n|     Item ID      |        Item Name         |    Total Rev    |\n-----------------------------------------------------------------\n");
+
+		strcat(query, " LIMIT "); 
+		strcat(query, limit); 
+
+		if (mysql_query(conn, query)) {
+			fprintf(stderr, "%s\n", mysql_error(conn));
+			exit(1);
+		}
+
+		res = mysql_store_result(conn);
+
+		while ((row = mysql_fetch_row(res)))
+		{
+			printf("| %-16.16s | %-24.24s | %-15.15s |", row[0], row[1], row[2]);
+
+			printf("\n");
+		}
+
+		return;
+
 		return;
 	}
 }
 
 void viewByUnits(MYSQL* conn) 
 {
+	MYSQL_RES* res = NULL;
+	MYSQL_ROW row = NULL;
+	char limit[MAXSTRING] = "";
+	char query[MAXSTRING] = "SELECT purchase_item.item_id, item.name, SUM(purchase_item.item_quantity) AS Total_Units_Sold FROM purchase_item JOIN item ON purchase_item.item_id = item.id GROUP BY purchase_item.item_id ORDER BY SUM(purchase_item.item_quantity) DESC";
+
 	int choice = selectNumOfItemsListed();
 
 	if (choice == 0)
 	{
+		printf("Here are the most popular items in the grocery store by number of units sold:\n\n|     Item ID      |        Item Name         |    Total Units Sold    |\n------------------------------------------------------------------------\n");
+
+		if (mysql_query(conn, query)) {
+			fprintf(stderr, "%s\n", mysql_error(conn));
+			exit(1);
+		}
+
+		res = mysql_store_result(conn);
+
+		while ((row = mysql_fetch_row(res)))
+		{
+			printf("| %-16.16s | %-24.24s | %-22.22s |", row[0], row[1], row[2]);
+
+			printf("\n");
+		}
+
 		return;
 	}
 	else if (choice != 0)
 	{
+		sprintf(limit, "%d", choice); 
+
+		printf("Here are the most popular items in the grocery store by number of units sold:\n\n|     Item ID      |        Item Name         |    Total Units Sold    |\n------------------------------------------------------------------------\n");
+
+		strcat(query, " LIMIT ");
+		strcat(query, limit); 
+		
+		if (mysql_query(conn, query)) {
+			fprintf(stderr, "%s\n", mysql_error(conn));
+			exit(1);
+		}
+
+		res = mysql_store_result(conn);
+
+		while ((row = mysql_fetch_row(res)))
+		{
+			printf("| %-16.16s | %-24.24s | %-22.22s |", row[0], row[1], row[2]);
+
+			printf("\n");
+		}
+
 		return;
 	}
 }
