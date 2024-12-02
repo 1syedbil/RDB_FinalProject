@@ -42,23 +42,20 @@ void displayMainMenu()
 		"7 - Exit Program\n");
 }
 
+void connectToDatabase(MYSQL** conn)
+{
+	*conn = mysql_init(NULL);
+	if (!mysql_real_connect(*conn, "sql5.freesqldatabase.com",
+		"sql5746768", "BtgqLmSpNk", "sql5746768", 0, NULL, 0)) {
+		fprintf(stderr, "%s\n", mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
+}
+
 int main(void)
 {
-    // SQL Data
-    MYSQL* conn;
-    char* server = "sql5.freesqldatabase.com";
-    char* user = "sql5746768";
-    char* password = "BtgqLmSpNk";
-    char* database = "sql5746768";
-
-	// Starting SQL Connection - Might put this all into a function so it looks nicer
-	conn = mysql_init(NULL);
-	if (!mysql_real_connect(conn, server,
-		user, password, database, 0, NULL, 0)) {
-		fprintf(stderr, "%s\n", mysql_error(conn));
-		exit(1);
-	}
-
+    MYSQL* conn = NULL;
+	connectToDatabase(&conn);	
 
 	// Loop that keeps program alive and processes inputs, put your functions in here
 	voidFunc menuPtr = displayMainMenu;
@@ -115,7 +112,7 @@ int main(void)
                     printf("Invalid input, please try again\n");
                     system("pause");
                     break;
-                }
+                }	
             }
 
 			input = 0;
@@ -123,7 +120,7 @@ int main(void)
 			break;
 		case CHECK_ORDER_STATUS:
 			system("cls");
-
+			checkOrderStatus(conn);
 			break;
 		case MANAGE_EMPLOYEE:
 			system("cls");
