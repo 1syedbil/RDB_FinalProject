@@ -86,7 +86,7 @@ int main(void)
 			trackRevenue(conn);
 			break;
 		case VIEW_ITEM_POPULARITY:
-
+			
 			while (input < 1 || input > 3)
 			{
 				system("cls");
@@ -121,6 +121,7 @@ int main(void)
             }
 
 			input = 0;
+			
 			break;
 		case CHECK_ORDER_STATUS:
 			system("cls");
