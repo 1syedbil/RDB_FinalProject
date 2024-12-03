@@ -1,6 +1,23 @@
 #pragma once
 #ifndef MAKE_PURCHASE
 #define MAKE_PURCHASE
+
+/*
+ * FILE          : makePurchase.h
+ * PROJECT       : PROG2111 - Final Project
+ * PROGRAMMER    : Navtej Saini (8958194)
+ * FIRST VERSION : 2024-12-03
+ * DESCRIPTION   :
+ *   This file implements the "Make a Purchase" use case for the grocery store
+ *   system. The functionality includes:
+ *     - Validating item existence in the database.
+ *     - Checking if the requested quantity of an item is available.
+ *     - Adding items to a dynamically maintained purchase list.
+ *     - Displaying the purchase list with calculated totals.
+ *     - Updating the database with new purchases and decrementing inventory
+ *       after purchase confirmation.
+ */
+
 #include "input.h"
 #include <mysql.h>
 #include <stdlib.h>
@@ -8,6 +25,7 @@
 #include <string.h>
 #include <time.h>
 
+// Structs
 typedef struct PurchaseItem {
     char item_name[MAX_INPUT];
     int quantity;
@@ -24,7 +42,21 @@ bool checkItemAvailability(MYSQL* conn, const char* item_name, int quantity, dou
 bool checkItemExists(MYSQL* conn, const char* item_name, double* item_price);
 
 
-// Add item to purchase list
+/*
+ * FUNCTION      : addPurchaseItem
+ * DESCRIPTION   :
+ *   Adds an item to the linked list representing the current purchase list.
+ *   Each node in the linked list contains the item name, quantity, total price,
+ *   and a pointer to the next node.
+ * PARAMETERS    :
+ *   PurchaseItem** head : A pointer to the pointer of the head of the purchase
+ *                         list (used to add new items at the front).
+ *   const char* item_name : The name of the item to be added to the list.
+ *   int quantity : The quantity of the item being purchased.
+ *   double item_total : The total cost of the item (quantity * unit price).
+ * RETURNS       :
+ *   void : This function does not return a value.
+ */
 void addPurchaseItem(PurchaseItem** head, const char* item_name, int quantity, double item_total) {
     PurchaseItem* new_item = (PurchaseItem*)malloc(sizeof(PurchaseItem));
     strcpy(new_item->item_name, item_name);
@@ -34,7 +66,17 @@ void addPurchaseItem(PurchaseItem** head, const char* item_name, int quantity, d
     *head = new_item;
 }
 
-// Display the current purchase list
+/*
+ * FUNCTION      : displayPurchaseList
+ * DESCRIPTION   :
+ *   Displays the current purchase list, including each item's name, quantity,
+ *   and total price. The function also calculates and displays the total cost
+ *   of all items in the list.
+ * PARAMETERS    :
+ *   PurchaseItem* head : A pointer to the head of the purchase list.
+ * RETURNS       :
+ *   void : This function does not return a value.
+ */
 void displayPurchaseList(PurchaseItem* head) {
     double total = 0;
     printf("Current Purchase List:\n");
@@ -49,7 +91,17 @@ void displayPurchaseList(PurchaseItem* head) {
     printf("Total: $%.2f\n", total);
 }
 
-// Free the linked list memory
+/*
+ * FUNCTION      : freePurchaseList
+ * DESCRIPTION   :
+ *   Frees the memory allocated for the linked list representing the purchase
+ *   list. This function is called to prevent memory leaks when the
+ *   purchase list is no longer needed.
+ * PARAMETERS    :
+ *   PurchaseItem* head : A pointer to the head of the purchase list.
+ * RETURNS       :
+ *   void : This function does not return a value.
+ */
 void freePurchaseList(PurchaseItem* head) {
     while (head) {
         PurchaseItem* temp = head;
@@ -58,6 +110,21 @@ void freePurchaseList(PurchaseItem* head) {
     }
 }
 
+/*
+ * FUNCTION      : makePurchase
+ * DESCRIPTION   :
+ *   Handles the "Make a Purchase" use case. The function allows users to:
+ *     - Enter item names and validate their existence in the database.
+ *     - Enter a valid quantity and check inventory availability.
+ *     - Add items to a dynamically maintained purchase list.
+ *     - Confirm the purchase, update the database with new purchases, and
+ *       decrement the inventory of purchased items.
+ * PARAMETERS    :
+ *   MYSQL* conn : Pointer to the MySQL connection object used for database
+ *                 queries.
+ * RETURNS       :
+ *   void : This function does not return a value.
+ */
 void makePurchase(MYSQL* conn) {
     PurchaseItem* purchase_list = NULL; // Initialize empty purchase list
     char item_name[MAX_INPUT];
@@ -137,6 +204,22 @@ void makePurchase(MYSQL* conn) {
     }
 }
 
+/*
+ * FUNCTION      : checkItemAvailability
+ * DESCRIPTION   :
+ *   Validates whether the requested quantity of an item is available in the
+ *   database. If the requested quantity exceeds the available stock, an error
+ *   message is displayed.
+ * PARAMETERS    :
+ *   MYSQL* conn : Pointer to the MySQL connection object used for database
+ *                 queries.
+ *   const char* item_name : The name of the item being checked.
+ *   int quantity : The quantity of the item requested by the user.
+ *   double* item_price : Pointer to store the item's unit price if available.
+ * RETURNS       :
+ *   bool : Returns true if the item is available in the requested quantity,
+ *          false otherwise.
+ */
 
 bool checkItemAvailability(MYSQL* conn, const char* item_name, int quantity, double* item_price) {
     char query[256];
@@ -168,6 +251,20 @@ bool checkItemAvailability(MYSQL* conn, const char* item_name, int quantity, dou
     return true; // Enough stock
 }
 
+/*
+ * FUNCTION      : checkItemExists
+ * DESCRIPTION   :
+ *   Checks if an item with the given name exists in the database. If the item
+ *   exists, the item's price is retrieved and stored in the provided pointer.
+ * PARAMETERS    :
+ *   MYSQL* conn : Pointer to the MySQL connection object used for database
+ *                 queries.
+ *   const char* item_name : The name of the item to be checked.
+ *   double* item_price : Pointer to store the item's unit price if it exists.
+ * RETURNS       :
+ *   bool : Returns true if the item exists, false otherwise.
+ */
+
 bool checkItemExists(MYSQL* conn, const char* item_name, double* item_price) {
     char query[256];
     sprintf(query, "SELECT retail_price FROM item WHERE name = '%s'", item_name);
@@ -190,6 +287,22 @@ bool checkItemExists(MYSQL* conn, const char* item_name, double* item_price) {
     return true; // Item exists
 }
 
+/*
+ * FUNCTION      : updateDatabase
+ * DESCRIPTION   :
+ *   Updates the database after the user confirms their purchase. This function:
+ *     - Inserts a new row into the `purchase` table to create a new purchase ID.
+ *     - Inserts rows into the `purchase_item` table for each item in the
+ *       purchase list, recording the quantity and total price.
+ *     - Decrements the `store_quantity` of each purchased item in the `item`
+ *       table.
+ * PARAMETERS    :
+ *   MYSQL* conn : Pointer to the MySQL connection object used for database
+ *                 queries.
+ *   PurchaseItem* head : A pointer to the head of the purchase list.
+ * RETURNS       :
+ *   void : This function does not return a value.
+ */
 
 void updateDatabase(MYSQL* conn, PurchaseItem* head) {
     char query[256];

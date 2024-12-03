@@ -2,8 +2,11 @@
 #define CREATE_ORDER
 
 #include <stdbool.h>
+#include <mysql.h>
 
 #include "input.h"
+
+#define PROMPT_MAX 500
 
 //-------------------------------------------STRUCTS---------------------------------------------//
 
@@ -12,54 +15,57 @@ typedef struct orderItem {
 	int quantity;
 	double item_order_cost;
 	struct orderItem* next;
-} orderItem;
+} orderItem; 
 
 
 //------------------------------------------PROTOTYPES-------------------------------------------//
 
-void displayOrders() {
+void displayOrders(char* prompt, orderItem* firstItem);
 
-}
+MYSQL_RES* readItem(MYSQL* conn, char* name);
+MYSQL_RES* createOrder(MYSQL* conn);
+MYSQL_RES* createOrderItem(MYSQL* conn, orderItem* item);
 
 
-//------------------------------------------MAIN METHOD------------------------------------------//
+//-----------------------------------------MAIN METHODS------------------------------------------//
 
-void createOrder(MYSQL* conn) {
+void makeOrder(MYSQL* conn) {
 	bool continueOrder = true;
-	struct orderItem* start = NULL;
-	struct orderItem* current = NULL;
+	char prompt[PROMPT_MAX];
+
+	orderItem* start = NULL;
+	orderItem* current = NULL;
 
 	while (continueOrder) {
 		// prompt user for item name and order quantity
 
 		// query for item
 
-		// create new orderedItem struct link
+		// if valid add item to linked list
+		// if not, display error to user
 
-		// display items currently in the order
+		displayOrders(prompt, start);
 
-		// prompt user to add more items or end
+		// prompt user to continue adding items to order
 	}
+}
 
-	// create new order and save order id
-
-	while (current != NULL) {
-		// create an orderItem record
-	}
+void displayOrders(char* prompt, orderItem* firstItem) {
+	// Loop through each item, printing the information to the console
 }
 
 
 //-----------------------------------------QUERY METHODS-----------------------------------------//
 
-MYSQL_RES* readItem(char* name) {
+MYSQL_RES* readItem(MYSQL* conn, char* name) {
 
 }
 
-//MYSQL_RES* createOrder() {
-//
-//}
+MYSQL_RES* createOrder(MYSQL* conn) {
 
-MYSQL_RES* createOrderItem() {
+}
+
+MYSQL_RES* createOrderItem(MYSQL* conn, orderItem* item) {
 
 }
 

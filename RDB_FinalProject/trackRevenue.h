@@ -1,17 +1,36 @@
 #ifndef TRACKREVENUE
 #define TRACKREVENUE
 
+/*
+* FILE : trackRevenue.h
+* PROJECT : PROG2111 - FinalPorject 
+* PROGRAMMER : Hyung Seop Lee
+* FIRST VERSION : 2024-12-03
+* DESCRIPTION :
+* This program get user input of item ID and tracks
+* the total revenue of that item and display
+* itme ID, item Name, quantity and total revenue
+*
+*/
+
 #include <mysql.h>
 #include "input.h"
 
 #define QUERYLENGTH 1024
 
-//item id, item name, item quantity, total revenue(sum of total price)
-//after the purchase happened, sum of specific item and display sum of total_price
-
 //prototypes
 bool searchItemId(MYSQL* conn, int item_id);
 
+/*
+ * FUNCTION: trackRevenue
+ * DESCRIPTION:
+ *   This function tracks the total revenue and quantity sold for a specific item ID
+ *   by querying the database. The user can enter an item ID and view the details.
+ * PARAMETERS:
+ *   MYSQL* conn - Pointer to the MySQL connection object used to execute database queries.
+ * RETURNS:
+ *   None.
+ */
 void trackRevenue(MYSQL* conn) {
 	MYSQL_RES* res;
 	MYSQL_ROW row;
@@ -68,6 +87,17 @@ void trackRevenue(MYSQL* conn) {
 		}
 	}
 }
+
+/*
+ * FUNCTION: searchItemId
+ * DESCRIPTION:
+ *   This function checks if a given item ID exists in the purchase_item table.
+ * PARAMETERS:
+ *   MYSQL* conn - Pointer to the MySQL connection object used to execute database queries.
+ *   int item_id - The item ID to search for in the database.
+ * RETURNS:
+ *   bool - Returns true if the item ID exists, false otherwise.
+ */
 
 bool searchItemId(MYSQL* conn, int item_id) {
 	MYSQL_RES* res;
