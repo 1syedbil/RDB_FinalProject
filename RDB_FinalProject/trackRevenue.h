@@ -21,10 +21,16 @@ void trackRevenue(MYSQL* conn) {
         int choice = 0;
         int item_id = 0;
 
-        getMenuChoice("Welcome to Track Revenue from Purchase Screen\n" 
+        /*getMenuChoice("Welcome to Track Revenue from Purchase Screen\n"
                        "0 - Return to Main Menu\n"
                        "1 - Contunue\n"
-                       "Input choice ", &choice, 0, 1, NULL);
+                       "Input choice ", &choice, 0, 1, NULL);*/
+
+        printf("Welcome to Track Revenue from Purchase Screen\n"
+            "0 - Return to Main Menu\n"
+            "1 - Contunue\n"
+            "Input choice: ");
+        scanf("%d", &choice);
 
         if (choice == 1) {
             printf("Enter Itmed ID: ");
@@ -56,6 +62,7 @@ void trackRevenue(MYSQL* conn) {
                         printf("Item ID: %s | Item Name: %s | Total Quantity: %s | Total Rvg. $%s \n\n", row[0], row[1], row[2], row[3]);
                     }
                 }
+                system("pause");
                 mysql_free_result(res);
             }
             else {
