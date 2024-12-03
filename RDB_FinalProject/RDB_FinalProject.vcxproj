@@ -136,7 +136,7 @@
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="curtis.h" />
+    <ClInclude Include="makeOrder.h" />
     <ClInclude Include="checkOrderStatus.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="makePurchase.h" />
