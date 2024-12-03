@@ -59,7 +59,7 @@ void trackRevenue(MYSQL* conn) {
 				mysql_free_result(res);
 			}
 			else {
-				printf("\nItem not found. Please enter another Item\n\n");
+				printf("\nThere are no purchases made for the item corresponding with the ID you entered.\n\n");
 			}
 		}
 		else {
