@@ -34,6 +34,8 @@ void createOrder(MYSQL* conn) {
 		// prompt user for item name and order quantity
 
 		// query for item
+	}
+}
 
 
 //-----------------------------------------QUERY METHODS-----------------------------------------//
