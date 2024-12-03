@@ -26,8 +26,8 @@ void displayOrders() {
 
 void createOrder(MYSQL* conn) {
 	bool continueOrder = true;
-	struct orderItem* start;
-	struct orderItem* current;
+	struct orderItem* start = NULL;
+	struct orderItem* current = NULL;
 
 	while (continueOrder) {
 		// prompt user for item name and order quantity
@@ -55,9 +55,9 @@ MYSQL_RES* readItem(char* name) {
 
 }
 
-MYSQL_RES* createOrder() {
-
-}
+//MYSQL_RES* createOrder() {
+//
+//}
 
 MYSQL_RES* createOrderItem() {
 
