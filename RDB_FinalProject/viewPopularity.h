@@ -15,16 +15,12 @@
 #endif
 
 //prototypes
-void popularitySubMenu(void);
 void viewByDep(MYSQL* conn);
 void viewByRev(MYSQL* conn);
 void viewByUnits(MYSQL* conn);
 int selectNumOfItemsListed(void);
-
-void popularitySubMenu(void)
-{
-	printf("What would you like to view item popularity by?\n\n\t1. By Department\n\t2. By Sales Revnue\n\t3. By Number of Units Sold\n");
-}
+void viewItemPopularity(MYSQL* conn); 
+int chooseDepItemRevOrUnits(void);    
 
 void viewItemPopularity(MYSQL* conn)
 {

@@ -12,6 +12,7 @@
 #include "trackRevenue.h"
 #include "viewPopularity.h"
 #include "makePurchase.h"
+#include "manageEmployee.h"
 
 /* --- Menu Choices --- */
 
@@ -40,7 +41,7 @@ void displayMainMenu()
 		"3 - Track Revenue From Item\n"
 		"4 - View Item Popularity\n"
 		"5 - Check Order Status\n"
-		"6 - Manage Employee's\n"
+		"6 - Manage Employees\n"
 		"7 - Recieve Order\n"
 		"8 - Exit Program\n");
 }
@@ -93,8 +94,7 @@ int main(void)
 			checkOrderStatus(conn);
 			break;
 		case MANAGE_EMPLOYEE:
-			system("cls");
-
+			manageEmployees(conn);
 			break;
 		case REVIEVE_ORDER:
 			recieveOrder(conn);
