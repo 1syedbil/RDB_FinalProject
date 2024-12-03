@@ -16,6 +16,7 @@ void removeEmployee(MYSQL* conn);
 void updateEmployee(MYSQL* conn);
 bool checkDepExists(MYSQL* conn, int id); 
 bool checkRoleExists(MYSQL* conn, char* role, char* department, char* employee);  
+bool checkEmployeeExists(MYSQL* conn, int id); 
  
 void manageEmployees(MYSQL* conn)
 {
@@ -194,7 +195,44 @@ void addEmployee(MYSQL* conn)
 
 void removeEmployee(MYSQL* conn)
 {
-	return; 
+	MYSQL_RES* res = NULL;
+	MYSQL_ROW row = NULL;
+	char employeeId[MAXSTRING] = "";
+	char query[MAXSTRING] = "DELETE FROM employee WHERE id="; 
+	int id = 0;
+	int choice = 0;
+
+	getInteger("Enter the ID of the employee you would like to remove", &id); 
+	sprintf(employeeId, "%d", id); 
+
+	if (!checkEmployeeExists(conn, id)) 
+	{
+		printf("There is no employee corresponding with the ID you entered.\n\n");
+		return;
+	}
+	else
+	{
+		strcat(query, employeeId); 
+		getMenuChoice("Are you sure you want to remove this employee? If you proceed then all of the employee's information will be deleted.\n1 - Yes\n2 - No\nInput your choice", &choice, 1, 2, NULL);  
+
+		if (choice == 1)
+		{
+			system("cls");
+
+			if (mysql_query(conn, query))
+			{
+				fprintf(stderr, "Error: %s\n", mysql_error(conn));
+				return;
+			}
+
+			printf("The employeed with the ID %d was deleted successfully.\n\n", id); 
+			return; 
+		}
+		else if (choice == 2)
+		{
+			return;
+		}
+	}
 }
 
 void updateEmployee(MYSQL* conn) 
@@ -251,6 +289,32 @@ bool checkDepExists(MYSQL* conn, int id)
 	if (res->row_count == 0)
 	{
 		return false;  
+	}
+
+	return true;
+}
+
+bool checkEmployeeExists(MYSQL* conn, int id)
+{
+	MYSQL_RES* res = NULL;
+	MYSQL_ROW row = NULL;
+	char dep[MAXSTRING] = "";
+	char query[MAXSTRING] = "SELECT * FROM employee WHERE id="; 
+
+	sprintf(dep, "%d", id);
+	strcat(query, dep);
+
+	if (mysql_query(conn, query))
+	{
+		fprintf(stderr, "Error: %s\n", mysql_error(conn));
+		return false;
+	}
+
+	res = mysql_store_result(conn);
+
+	if (res->row_count == 0)
+	{
+		return false;
 	}
 
 	return true;
