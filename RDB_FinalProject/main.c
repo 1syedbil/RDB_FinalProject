@@ -128,7 +128,7 @@ int main(void)
 
 			break;
 		case QUIT_PROGRAM:
-			loop = false;
+			//loop = false;
 			break;
 		default:
 			break;
