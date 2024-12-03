@@ -1,3 +1,13 @@
+/*
+ * FILE          : viewPopularity.h
+ * PROJECT       : PROG2111 - Final Project
+ * PROGRAMMER    : Bilal Syed (8927633)
+ * FIRST VERSION : 2024-12-03
+ * DESCRIPTION   : This header file defines the functions related to viewing the popularity of items in a grocery store based on 
+ *                 various metrics. It includes functions for viewing item popularity by department, by revenue, and by units sold.
+ *                 It also provides functionality to select the number of items to be listed and the option to choose the popularity metric.
+ */
+
 #ifndef POPULARITY
 #define POPULARITY
 
@@ -22,6 +32,13 @@ int selectNumOfItemsListed(void);
 void viewItemPopularity(MYSQL* conn); 
 int chooseDepItemRevOrUnits(void);    
 
+/*
+ * FUNCTION      : viewItemPopularity()
+ * DESCRIPTION   : This function displays the main menu for viewing item popularity. It offers options to view popularity by department, 
+                   revenue, or units sold. It calls the appropriate function to display the results based on the user's input.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void viewItemPopularity(MYSQL* conn)
 {
 	bool loop = true;
@@ -67,6 +84,13 @@ void viewItemPopularity(MYSQL* conn)
 	}
 }
 
+/*
+ * FUNCTION      : viewByDep()
+ * DESCRIPTION   : This function allows the user to view item popularity by department. It prompts the user for a department ID and 
+                   the metric (revenue or units) to determine popularity by.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void viewByDep(MYSQL* conn) 
 { 
 	MYSQL_RES* res = NULL; 
@@ -230,6 +254,13 @@ void viewByDep(MYSQL* conn)
 	}
 }
 
+/*
+ * FUNCTION      : chooseDepItemRevOrUnits()
+ * DESCRIPTION   : This function prompts the user to choose how they want to view item popularity in a department, either by revenue 
+                   or by units sold.
+ * PARAMETERS    : None
+ * RETURNS       : int - The user's choice: 1 for revenue, 2 for units sold.
+ */
 int chooseDepItemRevOrUnits(void)
 {
 	int choice = 0;
@@ -253,6 +284,13 @@ int chooseDepItemRevOrUnits(void)
 	return choice; 
 }
 
+/*
+ * FUNCTION      : viewByRev()
+ * DESCRIPTION   : This function displays the most popular items in the store based on total revenue. The user can specify how many 
+                   items to display.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void viewByRev(MYSQL* conn)
 {
 	MYSQL_RES* res = NULL;
@@ -311,6 +349,13 @@ void viewByRev(MYSQL* conn)
 	}
 }
 
+/*
+ * FUNCTION      : viewByUnits()
+ * DESCRIPTION   : This function displays the most popular items in the store based on the number of units sold. The user can specify 
+                   how many items to display.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void viewByUnits(MYSQL* conn) 
 {
 	MYSQL_RES* res = NULL;
@@ -367,6 +412,12 @@ void viewByUnits(MYSQL* conn)
 	}
 }
 
+/*
+ * FUNCTION      : selectNumOfItemsListed()
+ * DESCRIPTION   : This function asks the user how many items they want to display in the popularity list. It validates the input.
+ * PARAMETERS    : None
+ * RETURNS       : int - The number of items the user wants to list (0 for all items, or a positive number for a specific count).
+ */
 int selectNumOfItemsListed(void)
 {
 	int choice = 0; 

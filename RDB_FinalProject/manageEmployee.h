@@ -1,3 +1,13 @@
+/*
+ * FILE          : manageEmployee.h
+ * PROJECT       : PROG2111 - Final Project
+ * PROGRAMMER    : Bilal Syed (8927633)
+ * FIRST VERSION : 2024-12-03
+ * DESCRIPTION   : This header file defines the functions related to managing employee data in a grocery store database.
+ *                 It includes functions for adding, removing, and updating employee information. It also provides functions 
+                   to check the existence of employees, departments, and roles in the system.
+ */
+
 #ifndef EMPLOYEE
 #define EMPLOYEE
 
@@ -20,6 +30,13 @@ bool checkRoleExists(MYSQL* conn, char* role, char* department, char* employee);
 bool checkEmployeeExists(MYSQL* conn, int id); 
 bool checkPositionExists(MYSQL* conn, int id);  
  
+/*
+ * FUNCTION      : manageEmployees()
+ * DESCRIPTION   : This function handles the menu for employee management, offering options to add, remove, or update
+ *                 employee information. It loops until the user chooses to return to the main menu.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void manageEmployees(MYSQL* conn)
 {
 	bool loop = true;
@@ -65,6 +82,15 @@ void manageEmployees(MYSQL* conn)
 	}
 }
 
+/*
+ * FUNCTION      : addEmployee()
+ * DESCRIPTION   : This function is used to add a new employee to the grocery store database. It prompts the user
+ *                 for the employee's details, assigns the employee to a department and role, and stores the data 
+                   in the appropriate tables. This function also allows the user to create multiple roles in different
+				   departments for the user's newly created employee.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void addEmployee(MYSQL* conn)
 {
 	MYSQL_RES* res = NULL;
@@ -195,6 +221,13 @@ void addEmployee(MYSQL* conn)
 
 }
 
+/*
+ * FUNCTION      : removeEmployee()
+ * DESCRIPTION   : This function removes an existing employee from the grocery store database. It prompts the user for the employee's
+ *                 ID, verifies the employee's existence, and deletes their record from the database if confirmed.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void removeEmployee(MYSQL* conn)
 {
 	MYSQL_RES* res = NULL;
@@ -237,6 +270,13 @@ void removeEmployee(MYSQL* conn)
 	}
 }
 
+/*
+ * FUNCTION      : updateEmployee()
+ * DESCRIPTION   : This function allows the user to update an existing employee's personal or position information. The user is prompted
+ *                 to choose whether to update personal details or position details, and changes are saved to the database accordingly.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ * RETURNS       : None
+ */
 void updateEmployee(MYSQL* conn) 
 {
 	MYSQL_RES* res = NULL;
@@ -344,6 +384,14 @@ void updateEmployee(MYSQL* conn)
 	}
 }
 
+/*
+ * FUNCTION      : displayEmployeeInfo()
+ * DESCRIPTION   : This function displays all the information related to a specific employee, including their personal details and position
+ *                 information (role, department). It queries the database and prints the employee's details in a readable format.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ *                 char* id - The ID of the employee whose information is to be displayed.
+ * RETURNS       : None
+ */
 void displayEmployeeInfo(MYSQL* conn, char* id)
 {
 	MYSQL_RES* res = NULL;
@@ -387,6 +435,15 @@ void displayEmployeeInfo(MYSQL* conn, char* id)
 	}
 }
 
+/*
+ * FUNCTION      : checkPositionExists()
+ * DESCRIPTION   : This function checks if a position record in the position table exists for a 
+                   specific employee. The position table is used to keep track of what roles an 
+				   employee has in different departments
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ *                 int id - The position ID to check.
+ * RETURNS       : bool - Returns true if the position exists and false if it doesn't exist.
+ */
 bool checkPositionExists(MYSQL* conn, int id)
 {
 	MYSQL_RES* res = NULL;
@@ -414,6 +471,19 @@ bool checkPositionExists(MYSQL* conn, int id)
 	return true;
 }
 
+/*
+ * FUNCTION      : checkRoleExists()
+ * DESCRIPTION   : This function checks if a given role exists for a specific employee in a specific department.
+ *				   This information will then be used to prevent an employee from having duplicate roles in a 
+ *                 single department. This is because an employee can have the same role in two different departments
+ *                 but can't have duplicate roles within a single department.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ *                 char* role - The role name to check.
+ *                 char* department - The department ID.
+ *                 char* employee - The employee ID.
+ * RETURNS       : bool - Returns true if the role exists for the employee in the specified department and false if it
+                          doesn't exist.
+ */
 bool checkRoleExists(MYSQL* conn, char* role, char* department, char* employee) 
 {
 	MYSQL_RES* res = NULL; 
@@ -442,6 +512,13 @@ bool checkRoleExists(MYSQL* conn, char* role, char* department, char* employee)
 	return true;
 }
 
+/*
+ * FUNCTION      : checkDepExists()
+ * DESCRIPTION   : This function checks if a department exists in the database based on the given department ID.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ *                 int id - The ID of the department to check.
+ * RETURNS       : bool - Returns true if the department exists and false if it doesn't exist.
+ */
 bool checkDepExists(MYSQL* conn, int id)  
 {
 	MYSQL_RES* res = NULL;
@@ -468,6 +545,13 @@ bool checkDepExists(MYSQL* conn, int id)
 	return true;
 }
 
+/*
+ * FUNCTION      : checkEmployeeExists()
+ * DESCRIPTION   : This function checks if an employee exists in the database based on their employee ID.
+ * PARAMETERS    : MYSQL* conn - MySQL connection object to interact with the database.
+ *                 int id - The ID of the employee to check.
+ * RETURNS       : bool - Returns true if the employee exists and flase if it doesn't exist.
+ */
 bool checkEmployeeExists(MYSQL* conn, int id)
 {
 	MYSQL_RES* res = NULL;
