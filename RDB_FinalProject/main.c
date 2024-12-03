@@ -11,6 +11,7 @@
 #include "checkOrderStatus.h"
 #include "trackRevenue.h"
 #include "viewPopularity.h"
+#include "makePurchase.h"
 
 /* --- Menu Choices --- */
 
@@ -42,41 +43,35 @@ void displayMainMenu()
 		"7 - Exit Program\n");
 }
 
+void connectToDatabase(MYSQL** conn)
+{
+	*conn = mysql_init(NULL);
+	if (!mysql_real_connect(*conn, "sql5.freesqldatabase.com",
+		"sql5746768", "BtgqLmSpNk", "sql5746768", 0, NULL, 0)) {
+		fprintf(stderr, "%s\n", mysql_error(conn));
+		exit(EXIT_FAILURE);
+	}
+}
+
 int main(void)
 {
-    // SQL Data
-    MYSQL* conn;
-    MYSQL_RES* res; //don't think this is neccessary in main - bilal
-    MYSQL_ROW row;  //don't think this is neccessary in main - bilal
-    char* server = "sql5.freesqldatabase.com";
-    char* user = "sql5746768";
-    char* password = "BtgqLmSpNk";
-    char* database = "sql5746768";
-
-	// Starting SQL Connection - Might put this all into a function so it looks nicer
-	conn = mysql_init(NULL);
-	if (!mysql_real_connect(conn, server,
-		user, password, database, 0, NULL, 0)) {
-		fprintf(stderr, "%s\n", mysql_error(conn));
-		exit(1);
-	}
-
+    MYSQL* conn = NULL;
+	connectToDatabase(&conn);	
 
 	// Loop that keeps program alive and processes inputs, put your functions in here
 	voidFunc menuPtr = displayMainMenu;
 	int input = 0;
 	while (input != 7)
 	{
-
 		system("cls");
-	
 		getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
 
 		switch (input)
 		{
 		case MAKE_PURCHASE:
 			system("cls");
-
+			makePurchase(conn);
+			system("pause");
 			break;
 		case MAKE_ORDER:
 			system("cls");
@@ -118,7 +113,7 @@ int main(void)
                     printf("Invalid input, please try again\n");
                     system("pause");
                     break;
-                }
+                }	
             }
 
 			input = 0;
@@ -126,14 +121,14 @@ int main(void)
 			break;
 		case CHECK_ORDER_STATUS:
 			system("cls");
-
+			checkOrderStatus(conn);
 			break;
 		case MANAGE_EMPLOYEE:
 			system("cls");
 
 			break;
 		case QUIT_PROGRAM:
-			exit(EXIT_SUCCESS);
+			loop = false;
 			break;
 		default:
 			break;

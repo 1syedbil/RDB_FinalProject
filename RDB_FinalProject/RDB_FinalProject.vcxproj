@@ -139,6 +139,7 @@
     <ClInclude Include="curtis.h" />
     <ClInclude Include="checkOrderStatus.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="makePurchase.h" />
     <ClInclude Include="trackRevenue.h" />
     <ClInclude Include="viewPopularity.h" />
   </ItemGroup>
