@@ -64,6 +64,7 @@ int main(void)
 	voidFunc menuPtr = displayMainMenu;
 	bool loop = true;
 	int input = 0;
+	printf("--- Welcome to SQLMart, please enjoy your stay! ---");
 	while (loop)
 	{
 		system("cls");
@@ -85,42 +86,7 @@ int main(void)
 			trackRevenue(conn);
 			break;
 		case VIEW_ITEM_POPULARITY:
-			
-			while (input < 1 || input > 3)
-			{
-				system("cls");
-
-				input = popularitySubMenu();
-
-                switch (input)
-                {
-                case POPULARITYSUB1:
-                    system("cls"); 
-                    viewByDep(conn); 
-
-					system("pause"); 
-                    break;
-                case POPULARITYSUB2:
-                    system("cls");  
-                    viewByRev(conn); 
-
-					system("pause"); 
-                    break;
-                case POPULARITYSUB3: 
-                    system("cls"); 
-                    viewByUnits(conn); 
-
-					system("pause");
-                    break;
-                default:
-                    printf("Invalid input, please try again\n");
-                    system("pause");
-                    break;
-                }	
-            }
-
-			input = 0;
-			
+			viewItemPopularity(conn);
 			break;
 		case CHECK_ORDER_STATUS:
 			system("cls");

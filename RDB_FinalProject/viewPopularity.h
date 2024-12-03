@@ -7,24 +7,68 @@
 #define SPECIFIC 2
 #define MAXSTRING 500
 
+#define POPULARITYSUB1 1
+#define POPULARITYSUB2 2
+#define POPULARITYSUB3 3
+#define DONE 4
+
 #endif
 
 //prototypes
-int popularitySubMenu(void);
+void popularitySubMenu(void);
 void viewByDep(MYSQL* conn);
 void viewByRev(MYSQL* conn);
 void viewByUnits(MYSQL* conn);
 int selectNumOfItemsListed(void);
 
-int popularitySubMenu(void)
+void popularitySubMenu(void)
 {
-	int choice = 0;
-
 	printf("What would you like to view item popularity by?\n\n\t1. By Department\n\t2. By Sales Revnue\n\t3. By Number of Units Sold\n");
+}
 
-	getInteger("Input choice (1-3) from menu", &choice);
+void viewItemPopularity(MYSQL* conn)
+{
+	bool loop = true;
+	while (loop)
+	{
+		system("cls");
+		int choice = 0;
+		getMenuChoice("View Item Popularity \n"
+					  " 1 - By Department\n"
+					  " 2 - By Sales Revenue\n"
+					  " 3 - By Number of Units Sold\n"
+					  " 4 - Return to Main Menu\n"
+					  " Input choice", &choice, 1, 4, NULL);
 
-	return choice;
+		switch (choice)
+		{
+		case POPULARITYSUB1:
+			system("cls");
+			viewByDep(conn);
+
+			system("pause");
+			break;
+		case POPULARITYSUB2:
+			system("cls");
+			viewByRev(conn);
+
+			system("pause");
+			break;
+		case POPULARITYSUB3:
+			system("cls");
+			viewByUnits(conn);
+
+			system("pause");
+			break;
+		case DONE:
+			return;
+			break;
+		default:
+			printf("Invalid input, please try again\n");
+			system("pause");
+			break;
+		}
+	}
 }
 
 void viewByDep(MYSQL* conn) 
