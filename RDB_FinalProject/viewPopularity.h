@@ -141,9 +141,7 @@ void viewByDep(MYSQL* conn)
 
 			while ((row = mysql_fetch_row(res)))
 			{
-				printf("| %-16.16s | %-24.24s | %-15.15s |", row[0], row[1], row[2]);
-
-				printf("\n");   
+				printf("| %-16.16s | %-24.24s | %-15.15s |\n", row[0], row[1], row[2]);
 			}
 		}
 		else if (choice == 2)

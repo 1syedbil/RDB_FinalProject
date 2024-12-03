@@ -14,9 +14,11 @@ void manageEmployees(MYSQL* conn);
 void addEmployee(MYSQL* conn); 
 void removeEmployee(MYSQL* conn);
 void updateEmployee(MYSQL* conn);
+void displayEmployeeInfo(MYSQL* conn, char* id); 
 bool checkDepExists(MYSQL* conn, int id); 
 bool checkRoleExists(MYSQL* conn, char* role, char* department, char* employee);  
 bool checkEmployeeExists(MYSQL* conn, int id); 
+bool checkPositionExists(MYSQL* conn, int id);  
  
 void manageEmployees(MYSQL* conn)
 {
@@ -237,7 +239,179 @@ void removeEmployee(MYSQL* conn)
 
 void updateEmployee(MYSQL* conn) 
 {
-	return;
+	MYSQL_RES* res = NULL;
+	MYSQL_ROW row = NULL;
+	char employeeId[MAXSTRING] = "";
+	char query[MAXSTRING] = "";
+	char name[MAXSTRING] = "";
+	char positionId[MAXSTRING] = "";
+	char departmentId[MAXSTRING] = ""; 
+	char role[MAXSTRING] = "";
+	int id = 0;
+	int choice = 0;
+	bool loop = true; 
+
+	getInteger("Enter the ID of the employee you would like to update", &id); 
+	sprintf(employeeId, "%d", id); 
+
+	if (!checkEmployeeExists(conn, id)) 
+	{
+		printf("There is no employee corresponding with the ID you entered.\n\n"); 
+		return;
+	}
+	else
+	{
+		system("cls");
+
+		displayEmployeeInfo(conn, employeeId); 
+
+		getMenuChoice("What would you like to update?\n1 - Employee Personal Info\n2 - Employee Position Info\nInput your choice", &choice, 1, 2, NULL);
+
+		if (choice == 1)
+		{
+			getString("Enter the name you would like to update the employee name to", &name); 
+
+			strcpy(query, "UPDATE employee SET name = '");
+			strcat(query, name); 
+			strcat(query, "' WHERE id=");
+			strcat(query, employeeId); 
+
+			if (mysql_query(conn, query))
+			{
+				fprintf(stderr, "Error: %s\n", mysql_error(conn));
+				return;
+			}
+
+			system("cls");
+			printf("Employee info was successfully updated.\n\n");
+			displayEmployeeInfo(conn, employeeId); 
+			return; 
+		}
+		else if (choice == 2)
+		{
+			while (loop) 
+			{
+				getInteger("Enter the ID of the position you would like to update for the employee", &id); 
+
+				if (!checkPositionExists(conn, id)) 
+				{
+					printf("There is no position corresponding with the ID you entered.\n\n"); 
+					continue;
+				}
+				else
+				{
+					sprintf(positionId, "%d", id); 
+					break; 
+				}
+			}
+
+			while (loop)
+			{
+				getInteger("Enter the ID you would like to update the department ID to for this position", &id); 
+
+				if (!checkDepExists(conn, id)) 
+				{
+					printf("There is no department corresponding with the ID you entered.\n\n");
+					continue;
+				}
+				else
+				{
+					sprintf(departmentId, "%d", id);
+					break;
+				}
+			}
+
+			getString("Enter the role you would like to assign the employee to", &role); 
+
+			strcpy(query, "UPDATE position SET department_id=");
+			strcat(query, departmentId);
+			strcat(query, ", role_name='");
+			strcat(query, role); 
+			strcat(query, "' WHERE id=");
+			strcat(query, positionId); 
+
+			if (mysql_query(conn, query))
+			{
+				fprintf(stderr, "Error: %s\n", mysql_error(conn));
+				return;
+			}
+
+			system("cls");
+			printf("Employee position info was successfully updated.\n\n");
+			displayEmployeeInfo(conn, employeeId);
+			return;
+		}
+	}
+}
+
+void displayEmployeeInfo(MYSQL* conn, char* id)
+{
+	MYSQL_RES* res = NULL;
+	MYSQL_ROW row = NULL;
+	char query[MAXSTRING] = "";
+
+	printf("Here is all the information for the employee with ID %s:\n\n|     ID      |        Name        |    Store ID    |\n-----------------------------------------------------\n", id);
+
+	strcpy(query, "SELECT * FROM employee WHERE id=");
+	strcat(query, id);
+
+	if (mysql_query(conn, query))
+	{
+		fprintf(stderr, "Error: %s\n", mysql_error(conn));
+		return;
+	}
+
+	res = mysql_store_result(conn);
+
+	while ((row = mysql_fetch_row(res)))
+	{
+		printf("| %-11.11s | %-18.18s | %-14.14s |\n\n", row[0], row[1], row[2]);
+	}
+
+	printf("Here are all of the employee's positions:\n\n|       ID       |     Employee ID    |  Department ID  |     Role     |\n------------------------------------------------------------------------\n");
+
+	strcpy(query, "SELECT * FROM position WHERE employee_id =");
+	strcat(query, id);
+
+	if (mysql_query(conn, query))
+	{
+		fprintf(stderr, "Error: %s\n", mysql_error(conn));
+		return;
+	}
+
+	res = mysql_store_result(conn);
+
+	while ((row = mysql_fetch_row(res)))
+	{
+		printf("| %-14.14s | %-18.18s | %-15.15s | %-12.12s |\n", row[0], row[1], row[2], row[3]);
+	}
+}
+
+bool checkPositionExists(MYSQL* conn, int id)
+{
+	MYSQL_RES* res = NULL;
+	MYSQL_ROW row = NULL;
+	char query[MAXSTRING] = "SELECT * FROM position WHERE id =";
+	char posId[MAXSTRING] = "";
+
+	sprintf(posId, "%d", id); 
+
+	strcat(query, posId);  
+
+	if (mysql_query(conn, query))
+	{
+		fprintf(stderr, "Error: %s\n", mysql_error(conn));
+		return false;
+	}
+
+	res = mysql_store_result(conn);
+
+	if (res->row_count == 0)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 bool checkRoleExists(MYSQL* conn, char* role, char* department, char* employee) 
