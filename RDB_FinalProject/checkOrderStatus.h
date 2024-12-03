@@ -2,10 +2,20 @@
 #define CHECKORDERSTATUS
 
 #include "input.h"
+#include <time.h>
 
 
 
 bool checkIfPrimaryKeyExists(MYSQL* conn, int where, int id);
+
+char* getCurrTimeStamp()
+{
+	static char currTime[20];
+	time_t t = time(NULL);
+	struct tm* tm_info = localtime(&t);
+	strftime(currTime, sizeof(currTime), "%Y-%m-%d %H:%M:%S", tm_info);
+	return currTime;
+}
 
 
 
@@ -44,14 +54,26 @@ void queryOrderItems(MYSQL* conn, int orderId)
 	MYSQL_ROW row = NULL;
 		 // We now have an array of strings big enough to hold all of the subqueries for each item inside order_items related to the order_id requested. 
 	  // Parse the results then execute subqueries on DB.
-	int index = 0;
+	int num = 0;
+	int totalCost = 0;
 	char miniQuery[100];
 	while ((row = mysql_fetch_row(res)) != NULL)
 	{
 		// [0] = id, [1] = Item_id, [2] = Item quantity, [3] = Order_total
 		snprintf(miniQuery, sizeof(miniQuery), "UPDATE item SET store_quantity = store_quantity + %d WHERE id = %d;", atoi(row[2]), atoi(row[1]));
 		checkSqlQuery(conn, miniQuery);
+		num++;
+		printf("Processed Order_Item #%d for Order with id %d\n", num, orderId);
+		totalCost += atoi(row[3]);
 	}
+	if (totalCost != 0)
+	{
+		snprintf(miniQuery, sizeof(miniQuery), "UPDATE `order` SET Arrival_date = '%s' WHERE id = %d", getCurrTimeStamp(), orderId);
+		checkSqlQuery(conn, miniQuery);
+		system("pause");
+	}
+	printf("Order total cost is %d \n", totalCost);
+	system("pause");
 	mysql_free_result(res);
 
 }
