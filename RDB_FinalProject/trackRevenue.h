@@ -13,96 +13,96 @@
 bool searchItemId(MYSQL* conn, int item_id);
 
 void trackRevenue(MYSQL* conn) {
-    MYSQL_RES* res;
-    MYSQL_ROW row;
+	MYSQL_RES* res;
+	MYSQL_ROW row;
 
-    while (true) {
+	while (true) {
 
-        int choice = 0;
-        int item_id = 0;
+		int choice = 0;
+		int item_id = 0;
 
-        getMenuChoice("Welcome to Track Revenue from Purchase Screen\n" 
-                       "0 - Return to Main Menu\n"
-                       "1 - Contunue\n"
-                       "Input choice ", &choice, 0, 1, NULL);
+		getMenuChoice("Welcome to Track Revenue from Purchase Screen\n"
+			"0 - Return to Main Menu\n"
+			"1 - Contunue\n"
+			"Input choice ", &choice, 0, 1, NULL);
 
-        if (choice == 1) {
-            printf("Enter Itmed ID: ");
-            scanf("%d", &item_id);
-            
-            if (searchItemId(conn, item_id)) {
-                const char* query = "SELECT p.item_id,  i.`name`, sum(p.item_quantity) AS total_quantity, sum(p.total_price) AS total_revenue "
-                    "FROM purchase_item p "
-                    "JOIN item i WHERE p.item_id = i.id AND p.item_id = %d;";
+		if (choice == 1) {
+			getInteger("Enter Item ID", &item_id);
 
-                char queryStr[QUERYLENGTH];
-                snprintf(queryStr, sizeof(queryStr), query, item_id);
+			if (searchItemId(conn, item_id)) {
+				const char* query = "SELECT p.item_id,  i.`name`, sum(p.item_quantity) AS total_quantity, sum(p.total_price) AS total_revenue "
+					"FROM purchase_item p "
+					"JOIN item i WHERE p.item_id = i.id AND p.item_id = %d;";
 
-                if (mysql_query(conn, queryStr)) {
-                    fprintf(stderr, "QUERY failed: %s\n", mysql_error(conn));
-                    return;
-                }
+				char queryStr[QUERYLENGTH];
+				snprintf(queryStr, sizeof(queryStr), query, item_id);
 
-                res = mysql_store_result(conn);
-                if (res == NULL) {
-                    fprintf(stderr, "mysql_store_result() failed: %s\n", mysql_error(conn));
-                    mysql_close(conn);
-                }
+				if (mysql_query(conn, queryStr)) {
+					fprintf(stderr, "QUERY failed: %s\n", mysql_error(conn));
+					return;
+				}
 
-                if (mysql_num_rows(res) > 0) {
-                    printf("\nTotal Revenue of Customer ID: %d \n\n", item_id);
+				res = mysql_store_result(conn);
+				if (res == NULL) {
+					fprintf(stderr, "mysql_store_result() failed: %s\n", mysql_error(conn));
+					mysql_close(conn);
+				}
 
-                    while ((row = mysql_fetch_row(res)) != NULL) {
-                        printf("Item ID: %s | Item Name: %s | Total Quantity: %s | Total Rvg. $%s \n\n", row[0], row[1], row[2], row[3]);
-                    }
-                }
-                mysql_free_result(res);
-            }
-            else {
-                printf("\nItem not found. Please enter another Item\n\n");
-            }   
-        }
-        else {
-            printf("Going Back To Main Menu\n");
-            break;
-        }
-    }
+				if (mysql_num_rows(res) > 0) {
+					printf("\nTotal Revenue of Customer ID: %d \n\n", item_id);
+
+					while ((row = mysql_fetch_row(res)) != NULL) {
+						printf("Item ID: %s | Item Name: %s | Total Quantity: %s | Total Rvg. $%s \n\n", row[0], row[1], row[2], row[3]);
+					}
+				}
+				system("pause");
+				mysql_free_result(res);
+			}
+			else {
+				printf("\nItem not found. Please enter another Item\n\n");
+			}
+		}
+		else {
+			printf("Going Back To Main Menu\n");
+			break;
+		}
+	}
 }
 
 bool searchItemId(MYSQL* conn, int item_id) {
-    MYSQL_RES* res;
+	MYSQL_RES* res;
 
-    const char* query =
-        "SELECT p.item_id "
-        "FROM purchase_item p "
-        "WHERE p.item_id = %d;";
+	const char* query =
+		"SELECT p.item_id "
+		"FROM purchase_item p "
+		"WHERE p.item_id = %d;";
 
-    char queryStr[QUERYLENGTH];
-    snprintf(queryStr, sizeof(queryStr), query, item_id);
+	char queryStr[QUERYLENGTH];
+	snprintf(queryStr, sizeof(queryStr), query, item_id);
 
-    //execute query
-    if (mysql_query(conn, queryStr)) {
-        fprintf(stderr, "QUERY failed: %s\n", mysql_error(conn));
-        mysql_close(conn);
-        return false;
-    }
+	//execute query
+	if (mysql_query(conn, queryStr)) {
+		fprintf(stderr, "QUERY failed: %s\n", mysql_error(conn));
+		mysql_close(conn);
+		return false;
+	}
 
-    //store data
-    res = mysql_store_result(conn);
-    if (res == NULL) {
-        fprintf(stderr, "mysql_store_result() failed: %s\n", mysql_error(conn));
-        mysql_close(conn);
-        return false;
-    }
+	//store data
+	res = mysql_store_result(conn);
+	if (res == NULL) {
+		fprintf(stderr, "mysql_store_result() failed: %s\n", mysql_error(conn));
+		mysql_close(conn);
+		return false;
+	}
 
-    if (mysql_num_rows(res) > 0) {
-        mysql_free_result(res);
-        return true;
-    }
-    else {
-        mysql_free_result(res);
-        return false;
-    }
+	if (mysql_num_rows(res) > 0) {
+		mysql_free_result(res);
+		return true;
+	}
+	else {
+		mysql_free_result(res);
+		return false;
+	}
 }
 
 #endif
