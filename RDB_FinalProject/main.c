@@ -29,7 +29,7 @@
 #define POPULARITYSUB3 3
 /* --- Main Menu --- */
 
-#define MM_MAX_CHOICE 7
+#define MM_MAX_CHOICE 8
 #define MM_MIN_CHOICE 1
 
 
@@ -67,7 +67,7 @@ int main(void)
 	while (loop)
 	{
 		system("cls");
-		getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
+		getMenuChoice("Input choice (1-8) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
 
 		switch (input)
 		{
