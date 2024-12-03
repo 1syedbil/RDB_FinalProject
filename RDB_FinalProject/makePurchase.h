@@ -70,7 +70,7 @@ void makePurchase(MYSQL* conn) {
         system("cls");
         displayPurchaseList(purchase_list);
 
-        // Step 1: Prompt for item name
+        // Prompt for item name
         while (true) {
             getString("Enter the item name (or type 'done' to finish or 'cancel' to go back)", item_name);
 
@@ -114,7 +114,7 @@ void makePurchase(MYSQL* conn) {
             break;
         }
 
-        // Step 2: Prompt for quantity
+        // Prompt for quantity
         while (true) {
             getInteger("\nEnter the quantity", &quantity);
 
@@ -132,7 +132,7 @@ void makePurchase(MYSQL* conn) {
             break;
         }
 
-        // Step 3: Add to the purchase list
+        // Add to the purchase list
         addPurchaseItem(&purchase_list, item_name, quantity, item_price * quantity);
     }
 }
@@ -197,10 +197,42 @@ void updateDatabase(MYSQL* conn, PurchaseItem* head) {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
 
+    // Insert into the purchase table and get the purchase_id
+    sprintf(query, "INSERT INTO purchase (purchase_date, store_id) VALUES ('%d-%02d-%02d', 1)",
+        tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+    if (mysql_query(conn, query)) {
+        fprintf(stderr, "Error inserting into purchase table: %s\n", mysql_error(conn));
+        return;
+    }
+    purchase_id = mysql_insert_id(conn);
+
+
+    // Loop through the purchase list
     while (head) {
         // Insert into purchase_item
+        sprintf(query,
+            "INSERT INTO purchase_item (purchase_id, item_id, item_quantity, total_price) "
+            "SELECT %d, id, %d, (%f * %d) FROM item WHERE name = '%s'",
+            purchase_id, head->quantity, head->item_total / head->quantity, head->quantity, head->item_name);
+
+        if (mysql_query(conn, query)) {
+            fprintf(stderr, "Error inserting into purchase_item table: %s\n", mysql_error(conn));
+            return;
+        }
 
         // Update item inventory
+        sprintf(query,
+            "UPDATE item SET store_quantity = store_quantity - %d WHERE name = '%s'",
+            head->quantity, head->item_name);
+
+        if (mysql_query(conn, query)) {
+            fprintf(stderr, "Error updating item table: %s\n", mysql_error(conn));
+            return;
+        }
+
+        // Move to the next item in the list
+        head = head->next;
+
     }
 }
 
