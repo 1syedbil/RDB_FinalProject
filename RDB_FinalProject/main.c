@@ -21,7 +21,8 @@
 #define VIEW_ITEM_POPULARITY 4
 #define CHECK_ORDER_STATUS 5
 #define MANAGE_EMPLOYEE 6
-#define QUIT_PROGRAM 7
+#define REVIEVE_ORDER 7
+#define QUIT_PROGRAM 8
 
 #define POPULARITYSUB1 1
 #define POPULARITYSUB2 2
@@ -40,7 +41,8 @@ void displayMainMenu()
 		"4 - View Item Popularity\n"
 		"5 - Check Order Status\n"
 		"6 - Manage Employee's\n"
-		"7 - Exit Program\n");
+		"7 - Recieve Order\n"
+		"8 - Exit Program\n");
 }
 
 void connectToDatabase(MYSQL** conn)
@@ -127,6 +129,9 @@ int main(void)
 		case MANAGE_EMPLOYEE:
 			system("cls");
 
+			break;
+		case REVIEVE_ORDER:
+			recieveOrder(conn);
 			break;
 		case QUIT_PROGRAM:
 			loop = false;
