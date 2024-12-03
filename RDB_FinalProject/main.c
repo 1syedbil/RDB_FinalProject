@@ -67,6 +67,7 @@ int main(void)
 	int input = 0;
 	while (input != 7)
 	{
+
 		system("cls");
 	
 		getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
