@@ -7,11 +7,12 @@
 #include <mysql.h>
 
 #include "input.h"
-#include "curtis.h"
+#include "makeOrder.h"
 #include "checkOrderStatus.h"
 #include "trackRevenue.h"
 #include "viewPopularity.h"
 #include "makePurchase.h"
+#include "manageEmployee.h"
 
 /* --- Menu Choices --- */
 
@@ -21,14 +22,15 @@
 #define VIEW_ITEM_POPULARITY 4
 #define CHECK_ORDER_STATUS 5
 #define MANAGE_EMPLOYEE 6
-#define QUIT_PROGRAM 7
+#define REVIEVE_ORDER 7
+#define QUIT_PROGRAM 8
 
 #define POPULARITYSUB1 1
 #define POPULARITYSUB2 2
 #define POPULARITYSUB3 3
 /* --- Main Menu --- */
 
-#define MM_MAX_CHOICE 7
+#define MM_MAX_CHOICE 8
 #define MM_MIN_CHOICE 1
 
 
@@ -39,8 +41,9 @@ void displayMainMenu()
 		"3 - Track Revenue From Item\n"
 		"4 - View Item Popularity\n"
 		"5 - Check Order Status\n"
-		"6 - Manage Employee's\n"
-		"7 - Exit Program\n");
+		"6 - Manage Employees\n"
+		"7 - Recieve Order\n"
+		"8 - Exit Program\n");
 }
 
 void connectToDatabase(MYSQL** conn)
@@ -62,10 +65,11 @@ int main(void)
 	voidFunc menuPtr = displayMainMenu;
 	bool loop = true;
 	int input = 0;
+	printf("--- Welcome to SQLMart, please enjoy your stay! ---");
 	while (loop)
 	{
 		system("cls");
-		getMenuChoice("Input choice (1-6) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
+		getMenuChoice("Input choice (1-8) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
 
 		switch (input)
 		{
@@ -83,50 +87,17 @@ int main(void)
 			trackRevenue(conn);
 			break;
 		case VIEW_ITEM_POPULARITY:
-			
-			while (input < 1 || input > 3)
-			{
-				system("cls");
-
-				input = popularitySubMenu();
-
-                switch (input)
-                {
-                case POPULARITYSUB1:
-                    system("cls"); 
-                    viewByDep(conn); 
-
-					system("pause"); 
-                    break;
-                case POPULARITYSUB2:
-                    system("cls");  
-                    viewByRev(conn); 
-
-					system("pause"); 
-                    break;
-                case POPULARITYSUB3: 
-                    system("cls"); 
-                    viewByUnits(conn); 
-
-					system("pause");
-                    break;
-                default:
-                    printf("Invalid input, please try again\n");
-                    system("pause");
-                    break;
-                }	
-            }
-
-			input = 0;
-			
+			viewItemPopularity(conn);
 			break;
 		case CHECK_ORDER_STATUS:
 			system("cls");
 			checkOrderStatus(conn);
 			break;
 		case MANAGE_EMPLOYEE:
-			system("cls");
-
+			manageEmployees(conn);
+			break;
+		case REVIEVE_ORDER:
+			recieveOrder(conn);
 			break;
 		case QUIT_PROGRAM:
 			loop = false;

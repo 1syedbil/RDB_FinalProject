@@ -2,6 +2,7 @@
 #define USER_INPUT
 
 #pragma warning (disable: 4996)
+#include <mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

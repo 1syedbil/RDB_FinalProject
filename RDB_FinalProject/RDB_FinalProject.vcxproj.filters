@@ -23,7 +23,7 @@
     <ClInclude Include="input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="curtis.h">
+    <ClInclude Include="makeOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="checkOrderStatus.h">
