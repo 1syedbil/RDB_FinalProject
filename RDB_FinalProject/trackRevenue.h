@@ -37,7 +37,7 @@ void trackRevenue(MYSQL* conn) {
 
 	while (true) {
 
-		int choice = 0;
+		int choice = -1;
 		int item_id = 0;
 
 		getMenuChoice("Welcome to Track Revenue from Purchase Screen\n"

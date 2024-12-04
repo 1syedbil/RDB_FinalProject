@@ -1,10 +1,15 @@
+/*
+ * FILE          : main.c
+ * PROJECT       : PROG2111 - Final Project
+ * PROGRAMMER    : Dylan Shouldice-Jacobs (8915799)
+ * FIRST VERSION : 2024-12-03
+ * DESCRIPTION   : This is the testHarness for our project, it deals with collecting user input to determine what functionality to do.
+ *				   Then it passes control to the functionality. As well as dealing with connecting to the mySQL server.
+ */
+
+
 #pragma warning (disable: 4996)
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <conio.h>
-#include <stdbool.h>
-#include <mysql.h>
+
 
 #include "input.h"
 #include "makeOrder.h"
@@ -34,6 +39,12 @@
 #define MM_MIN_CHOICE 1
 
 
+/*
+ * FUNCTION   : displayMainMenu
+ * DESCRIPTION: Prints the main menu options.
+ * PARAMETERS : VOID
+ * RETURNS    : VOID
+ */
 void displayMainMenu()
 {
 	printf("1 - Make Purchase\n"
@@ -46,6 +57,13 @@ void displayMainMenu()
 		"8 - Exit Program\n");
 }
 
+
+/*
+ * FUNCTION   : connectToDataBase
+ * DESCRIPTION: Connects the our mySQL server
+ * PARAMETERS : MYSQL** conn - Memory address of the pointer that points to the MYSQL connection object
+ * RETURNS    : VOID
+ */
 void connectToDatabase(MYSQL** conn)
 {
 	*conn = mysql_init(NULL);
@@ -55,6 +73,8 @@ void connectToDatabase(MYSQL** conn)
 		exit(EXIT_FAILURE);
 	}
 }
+
+
 
 int main(void)
 {
@@ -68,6 +88,7 @@ int main(void)
 	printf("--- Welcome to SQLMart, please enjoy your stay! ---");
 	while (loop)
 	{
+		input = 0;
 		system("cls");
 		getMenuChoice("Input choice (1-8) from menu", &input, MM_MIN_CHOICE, MM_MAX_CHOICE, menuPtr);
 
@@ -76,7 +97,7 @@ int main(void)
 		case MAKE_PURCHASE:
 			system("cls");
 			makePurchase(conn);
-			system("pause");
+
 			break;
 		case MAKE_ORDER:
 			system("cls");
@@ -106,8 +127,6 @@ int main(void)
 			break;
 		}
 	}
-
-   
     mysql_close(conn);
 
    return 0;
