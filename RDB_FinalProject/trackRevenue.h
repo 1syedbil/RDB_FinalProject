@@ -74,7 +74,6 @@ void trackRevenue(MYSQL* conn) {
 						printf("Item ID: %s | Item Name: %s | Total Quantity: %s | Total Rvg. $%s \n\n", row[0], row[1], row[2], row[3]);
 					}
 				}
-				system("pause");
 				mysql_free_result(res);
 			}
 			else {
