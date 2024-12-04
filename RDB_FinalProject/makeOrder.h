@@ -3,7 +3,9 @@
 * Project :			Final Project
 * Programmer :		Curtis Wentzlaff
 * Date :			December 3, 2024
-* Description :
+* Description :		Creates a new store order by prompting the user for the items they want to order.
+*					After all items have been added a new enrty is created in the Order table and
+*					entries for each item are created in the Order_Item table.
 */
 
 #ifndef CREATE_ORDER
@@ -31,7 +33,7 @@ typedef struct orderItem {
 //------------------------------------------PROTOTYPES-------------------------------------------//
 
 void displayCurrentOrder(char* prompt, char* name);
-void displayOrders(char* prompt, orderItem* firstItem);
+// void displayOrders(char* prompt, orderItem* firstItem);
 
 void setOrderItem(MYSQL_RES* results, orderItem* item, int quantity);
 
@@ -78,14 +80,14 @@ void makeOrder(MYSQL* conn) {
 				current = start;
 			}
 			else {
+				current->next = (orderItem*)malloc(sizeof(orderItem));
+				setOrderItem(results, current->next, numInput);
 				current = current->next;
-				current = (orderItem*)malloc(sizeof(orderItem));
-				setOrderItem(results, current, numInput);
 			}
 		}
 		mysql_free_result(results);
 
-		//displayOrders(prompt, start);
+		// displayOrders(prompt, start);
 
 		// Prompt user to continue adding items to order
 		strcat(prompt, "\nAdd another item? (yes/no)");
@@ -123,7 +125,8 @@ void makeOrder(MYSQL* conn) {
 		current = start;
 	}
 
-
+	system("CLS");
+	printf("=====Order Created=====\n");
 	system("PAUSE");
 }
 
@@ -161,6 +164,7 @@ void displayCurrentOrder(char* prompt, char* name) {
 //		strcat(prompt, "\tTotal Order Cost: ");
 //		strcat(prompt, "");
 //		strcat(prompt, "\n");
+//		current = current->next;
 //	}
 //}
 
