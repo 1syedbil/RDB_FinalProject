@@ -145,10 +145,16 @@ MYSQL_RES* createOrder(MYSQL* conn) {
 
 	char query[QUERY_MAX];
 	snprintf(query, QUERY_MAX, "INSERT INTO order(Order_date, Store_id) VALUES ( %s , %d )", timestamp, STORE_ID);
+
 	return mysql_query(conn, query);
 }
 
 MYSQL_RES* createOrderItem(MYSQL* conn, orderItem* item, int orderId) {
+	char query[QUERY_MAX];
+	snprintf(query, QUERY_MAX, "INSERT INTO order_item(Order_id, Item_id, Item_quantity, Order_total) VALUES ( %d , %d, %d, %lf)",
+		orderId, item->item_ID, item->quantity, item->item_order_cost);
+
+	return mysql_query(conn, query);
 }
 
 #endif
