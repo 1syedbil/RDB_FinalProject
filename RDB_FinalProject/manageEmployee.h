@@ -218,7 +218,8 @@ void addEmployee(MYSQL* conn)
 		return; 
 	}
 
-
+	mysql_free_result(res); 
+	return;
 }
 
 /*
@@ -261,6 +262,9 @@ void removeEmployee(MYSQL* conn)
 			}
 
 			printf("The employeed with the ID %d was deleted successfully.\n\n", id); 
+
+			mysql_free_result(res);
+
 			return; 
 		}
 		else if (choice == 2)
@@ -325,6 +329,9 @@ void updateEmployee(MYSQL* conn)
 			system("cls");
 			printf("Employee info was successfully updated.\n\n");
 			displayEmployeeInfo(conn, employeeId); 
+
+			mysql_free_result(res);
+
 			return; 
 		}
 		else if (choice == 2)
@@ -379,6 +386,9 @@ void updateEmployee(MYSQL* conn)
 			system("cls");
 			printf("Employee position info was successfully updated.\n\n");
 			displayEmployeeInfo(conn, employeeId);
+
+			mysql_free_result(res);
+
 			return;
 		}
 	}
@@ -433,6 +443,8 @@ void displayEmployeeInfo(MYSQL* conn, char* id)
 	{
 		printf("| %-14.14s | %-18.18s | %-15.15s | %-12.12s |\n", row[0], row[1], row[2], row[3]);
 	}
+
+	mysql_free_result(res);
 }
 
 /*
@@ -465,8 +477,12 @@ bool checkPositionExists(MYSQL* conn, int id)
 
 	if (res->row_count == 0)
 	{
+		mysql_free_result(res);
+
 		return false;
 	}
+
+	mysql_free_result(res);
 
 	return true;
 }
@@ -506,8 +522,12 @@ bool checkRoleExists(MYSQL* conn, char* role, char* department, char* employee)
 
 	if (res->row_count == 0)
 	{
+		mysql_free_result(res); 
+
 		return false;
 	}
+
+	mysql_free_result(res); 
 
 	return true;
 }
@@ -539,8 +559,12 @@ bool checkDepExists(MYSQL* conn, int id)
 
 	if (res->row_count == 0)
 	{
+		mysql_free_result(res); 
+
 		return false;  
 	}
+
+	mysql_free_result(res);
 
 	return true;
 }
@@ -572,8 +596,12 @@ bool checkEmployeeExists(MYSQL* conn, int id)
 
 	if (res->row_count == 0)
 	{
+		mysql_free_result(res); 
+
 		return false;
 	}
+
+	mysql_free_result(res); 
 
 	return true;
 }

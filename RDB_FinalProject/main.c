@@ -101,7 +101,7 @@ int main(void)
 			break;
 		case MAKE_ORDER:
 			system("cls");
-
+			makeOrder(conn);
 			break;
 		case TRACK_REVENUE_ITEM:
 			system("cls");
