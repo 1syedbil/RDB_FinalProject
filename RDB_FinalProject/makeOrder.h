@@ -14,7 +14,10 @@
 
 #include "input.h"
 
-#define PROMPT_MAX 500
+#define PROMPT_MAX		500
+#define QUERY_MAX		1000
+
+#define STORE_ID		1
 
 //-------------------------------------------STRUCTS---------------------------------------------//
 
@@ -33,7 +36,7 @@ void displayOrders(char* prompt, orderItem* firstItem);
 
 MYSQL_RES* readItem(MYSQL* conn, char* name);
 MYSQL_RES* createOrder(MYSQL* conn);
-MYSQL_RES* createOrderItem(MYSQL* conn, orderItem* item);
+MYSQL_RES* createOrderItem(MYSQL* conn, orderItem* item, int orderId);
 
 
 //-----------------------------------------MAIN METHODS------------------------------------------//
@@ -65,6 +68,10 @@ void makeOrder(MYSQL* conn) {
 		getInteger(prompt, numInput);
 
 		results = readItem(conn, stringInput);
+		if (results->row_count == 1) {
+
+		}
+		mysql_free_result(results);
 
 		displayOrders(prompt, start);
 
@@ -87,9 +94,13 @@ void makeOrder(MYSQL* conn) {
 	// Create the Order and its OrderItems
 	results = createOrder(conn);
 
+	int orderId = 0;
+
+	mysql_free_result(results);
+
 	current = start;
 	while (current != NULL) {
-		results = createOrderItem(conn, current);
+		results = createOrderItem(conn, current, orderId);
 		current = current->next;
 	}
 }
@@ -105,21 +116,39 @@ void displayCurrentOrder(char* prompt, char* name, int quantity) {
 
 void displayOrders(char* prompt, orderItem* firstItem) {
 	strcpy(prompt, "");
+	orderItem* current = firstItem;
+	while (current != NULL) {
+		strcat(prompt, "Name: ");
+		strcat(prompt, "");
+		strcat(prompt, "\tQuantity: ");
+		strcat(prompt, "");
+		strcat(prompt, "\tTotal Order Cost: ");
+		strcat(prompt, "");
+		strcat(prompt, "\n");
+	}
 }
 
 
 //-----------------------------------------QUERY METHODS-----------------------------------------//
 
 MYSQL_RES* readItem(MYSQL* conn, char* name) {
-	// query for item with specified name
+	char query[QUERY_MAX];
+	strcpy(query, "");
+	strcat(query, "SELECT * FROM item WHERE name=");
+	strcat(query, name);
+
+	return mysql_query(conn, query);
 }
 
 MYSQL_RES* createOrder(MYSQL* conn) {
-	// create new order using current date
+	char* timestamp = NULL;
+
+	char query[QUERY_MAX];
+	snprintf(query, QUERY_MAX, "INSERT INTO order(Order_date, Store_id) VALUES ( %s , %d )", timestamp, STORE_ID);
+	return mysql_query(conn, query);
 }
 
-MYSQL_RES* createOrderItem(MYSQL* conn, orderItem* item) {
-	// create new order item using
+MYSQL_RES* createOrderItem(MYSQL* conn, orderItem* item, int orderId) {
 }
 
 #endif
