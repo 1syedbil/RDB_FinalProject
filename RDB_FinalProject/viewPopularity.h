@@ -318,6 +318,8 @@ void viewByRev(MYSQL* conn)
 			printf("\n");
 		}
 
+		mysql_free_result(res); 
+
 		return;
 	}
 	else if (choice != 0)
@@ -343,7 +345,7 @@ void viewByRev(MYSQL* conn)
 			printf("\n");
 		}
 
-		return;
+		mysql_free_result(res); 
 
 		return;
 	}
@@ -383,6 +385,8 @@ void viewByUnits(MYSQL* conn)
 			printf("\n");
 		}
 
+		mysql_free_result(res);
+
 		return;
 	}
 	else if (choice != 0)
@@ -407,6 +411,8 @@ void viewByUnits(MYSQL* conn)
 
 			printf("\n");
 		}
+
+		mysql_free_result(res); 
 
 		return;
 	}
