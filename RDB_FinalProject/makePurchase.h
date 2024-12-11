@@ -145,7 +145,7 @@ void makePurchase(MYSQL* conn) {
                 if (!purchase_list) {
                     printf("\nCannot fulfill an empty purchase.\n");
                     system("pause");
-                    break;
+                    return;
                 }
 
                 // Confirm the purchase
@@ -160,12 +160,17 @@ void makePurchase(MYSQL* conn) {
                     freePurchaseList(purchase_list);
                     return;
                 }
-                else {
-                    break; // Go back to the item name prompt
+                else if(confirm == 'n' || confirm == 'N') {
+                    printf("\nPurchase Cancelled. Returning to Main Menu...\n");
+                    system("pause");
+                    return; // Go back to the item name prompt
                 }
             }
 
             if (strcmp(item_name, "cancel") == 0) {
+                freePurchaseList(purchase_list);
+                printf("\nReturning to Main Menu...\n");
+                system("pause");
                 freePurchaseList(purchase_list);
                 return; // Exit the makePurchase menu and return to the main menu
             }
